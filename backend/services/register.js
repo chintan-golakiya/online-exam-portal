@@ -2,12 +2,8 @@ var userModel = require('../models/user');
 var tool = require('./tool');
 
 var studentRegister = (req,res,next) => {
-  var creator = null;
-  if(req.user) {
-    creator = req.user;
-  }
   
-  req.check('name','Invalid name').notEmpty();
+  req.check('username','Invalid name').notEmpty();
   req.check('email','Invalid Email Address').isEmail().notEmpty();
   req.check('password','Invalid Password').isLength({min: 5, max: 20});
 
@@ -20,7 +16,7 @@ var studentRegister = (req,res,next) => {
     })
   }
   else {
-    var name = req.body.name;
+    var username = req.body.username;
     var password = req.body.password;
     var email = req.body.email;
     
@@ -36,11 +32,10 @@ var studentRegister = (req,res,next) => {
         tool.hashPassword(password)
         .then((hash)=> {
           var tempdata = new userModel({
-            name : name,
+            username : username,
             password : hash,
             email : email,
-            usertype : 'STUDENT',
-            createdBy : creator
+            usertype : 'STUDENT'
           })
           tempdata.save()
           .then(()=>{

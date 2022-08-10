@@ -1,7 +1,4 @@
 var mongoose = require('mongoose')
-var testModel = require('../models/test')
-var userModel = require('../models/user')
-var optionModel = require('../models/option')
 
 var answersheetSchema = new mongoose.Schema({
   test : {
@@ -12,17 +9,24 @@ var answersheetSchema = new mongoose.Schema({
   student : {
     type : mongoose.Schema.Types.ObjectId,
     ref : 'userModel',
-    requried : true
+    required : true
   },
   score : {
     type : Number,
     default : 0,
-    requried : true
+    required : true
   },
   answers : [{
-    type : mongoose.Schema.Types.ObjectId,
-    ref : 'optionModel'
-  }]
+    type : String
+  }],
+  startTime : {
+    type : Date
+  },
+  completed : {
+    type : Boolean,
+    required : true,
+    default : false
+  }
 },{
   timestamps : {}
 })

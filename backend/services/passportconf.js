@@ -9,6 +9,7 @@ const saltRounds = 10;
 var config = require('config');
 
 var userModel = require('../models/user');
+var adminModel = require('../models/admin');
 
 var localStrategyOption = {
   usernameField: 'email',
@@ -17,7 +18,7 @@ var localStrategyOption = {
 }
 
 function localStrategyVerify(req,email, password, done){
-  userModel.findOne({'email':email,status:true}, (err, user)=>{
+  userModel.findOne({'email':email}, (err, user)=>{
     //  database server error
     if(err) {
       return done(err, false, {
@@ -31,6 +32,11 @@ function localStrategyVerify(req,email, password, done){
       return done(null, false, {
         success : false,
         message : 'email is not registered'
+      })
+    } else if (user.status == false) {
+      return done(null, false, {
+        success : false,
+        message : 'your account is blocked'
       })
     }
     else {
@@ -64,7 +70,7 @@ var jwt_options = {
   secretOrKey : config.jwt.secret
 }
 
-function jwtStrategyVeriry(jwt_payload, done) {
+function jwtStrategyVerify(jwt_payload, done) {
   userModel.findById(jwt_payload._id, (err, user)=> {
     //  database server error
     if(err) {
@@ -76,20 +82,95 @@ function jwtStrategyVeriry(jwt_payload, done) {
     if (user) {
       return done(null, user,{
           success: true,
-          message: "Successfull"
+          message: "Successful"
       }); 
     } 
     else {
       return done(null, false,{
           success: false,
-          message: "Authentication Failed"
+          message: "Authorization Failed"
       });
     }
   });
 }
 
-var jwtStrategy = new JwtStrategy(jwt_options, jwtStrategyVeriry);
+var jwtStrategy = new JwtStrategy(jwt_options, jwtStrategyVerify);
 
 passport.use('user-token',jwtStrategy);
+
+var localStrategyOptionAdmin = {
+  usernameField : 'username',
+  passwordField : 'password',
+  passReqToCallback : true
+}
+
+function localStrategyVerifyAdmin(req, username, password, done) {
+  adminModel.findOne({'username':username}, (err, admin)=> {
+    // database server error
+    if(err) {
+      return done(err, false, {
+        success : false,
+        message : 'server error'
+      })
+    }
+
+    //admin not found
+    if(!admin) {
+      return done(null, false, {
+        success : false,
+        message : 'user not found'
+      })
+    } else {
+      //check of password 
+      bcrypt.compare(password, admin.password)
+      .then((result)=>{
+        if(result) {
+          return done(null, admin, {
+            success : true,
+            message : 'logged in successfully'
+          })
+        }
+        else {
+          return done(null, false, {
+            success : false,
+            message : 'invalid password'
+          })
+        }
+      })
+    }
+  })
+}
+
+var localStrategyAdmin = new LocalStrategy(localStrategyOptionAdmin, localStrategyVerifyAdmin);
+
+passport.use('admin-login',localStrategyAdmin);
+
+function jwtStrategyVeriryAdmin(jwt_payload, done) {
+  adminModel.findById(jwt_payload._id, (err, admin)=>{
+    //database server error
+    if(err) {
+      return done(err, false, {
+        success : false,
+        message : 'server error'
+      })
+    }
+
+    if (admin) {
+      return done(null, admin, {
+        success : true,
+        message : 'successful'
+      })
+    } else {
+      return done(null, false, {
+        success : false,
+        message : 'Authorization failed'
+      })
+    }
+  })
+}
+
+var jwtStrategyAdmin = new JwtStrategy(jwt_options, jwtStrategyVeriryAdmin);
+
+passport.use('admin-token', jwtStrategyAdmin);
 
 module.exports = passport;

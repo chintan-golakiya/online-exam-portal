@@ -1,5 +1,4 @@
-var mongoose = require('mongoose');
-var userModel = require('../models/user')
+var mongoose = require('mongoose')
 
 var subjectSchema = new mongoose.Schema({
   name : {
@@ -14,7 +13,7 @@ var subjectSchema = new mongoose.Schema({
   },
   createdBy : {
     type : mongoose.Schema.Types.ObjectId,
-    ref : 'userModel'
+    ref : 'adminModel'
   }
 },
 {

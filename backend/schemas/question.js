@@ -1,22 +1,16 @@
 var mongoose = require('mongoose')
-var optionModel = require('../models/option')
-var subjectModel = require('../models/subject')
-var userModel = require('../models/user')
 
 var questionSchema = new mongoose.Schema({
   body : {
-    type : String
-  },
-  image : {
-    type : String
+    type : String,
+    required : true
   },
   explanation : {
     type : String,
     required : true
   },
   options : [ {
-    type : mongoose.Schema.Types.ObjectId,
-    ref : 'optionModel',
+    type : String,
     required : true
   }],
   subject : {
@@ -24,7 +18,7 @@ var questionSchema = new mongoose.Schema({
     ref : 'subjectModel',
     required : true
   },
-  weightage : {
+  marks : {
     type : Number,
     requried : true
   },

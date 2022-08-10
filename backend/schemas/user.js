@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
-var userModel = require('../models/user');
 
 var userSchema = new mongoose.Schema({
-  name : {
+  username : {
     type : String,
     required : true
   },
@@ -13,7 +12,7 @@ var userSchema = new mongoose.Schema({
   },
   usertype : {
     type : String,
-    enum : ['ADMIN', 'TEACHER', 'STUDENT'],
+    enum : ['TEACHER', 'STUDENT'],
     required : true 
   },
   password : {
@@ -26,7 +25,7 @@ var userSchema = new mongoose.Schema({
   },
   createdBy : {
     type : mongoose.Schema.Types.ObjectId,
-    ref : 'userModel'
+    ref : 'adminModel'
   }
 
 },

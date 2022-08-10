@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 
 var config = require('config');
 
-var userModel = require('../models/user');
 var passport = require('./passportconf');
 
 var userLogin = (req, res, next) => {
@@ -38,7 +37,7 @@ var userLogin = (req, res, next) => {
             success: true,
             message : 'login successful',
             user : {
-              name : user.name,
+              username : user.username,
               type : user.usertype,
               _id : user._id,
               email : user.email
@@ -56,7 +55,7 @@ var userDetails = (req,res,next) => {
     res.json({
       success:true,
       user : {
-        name : req.user.name,
+        username : req.user.username,
         type : req.user.usertype,
         _id : req.user._id,
         email : req.user.email
