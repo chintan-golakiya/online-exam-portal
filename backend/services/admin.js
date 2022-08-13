@@ -1,4 +1,5 @@
 var userModel = require('../models/user');
+var subjectModel = require('../models/subject');
 var tool = require('./tool');
 
 var teacherRegister = (req,res,next) => {
@@ -151,4 +152,122 @@ var adminDetails = (req,res,next) => {
   }
 }
 
-module.exports = { teacherRegister, userRemove, unblockUser, adminDetails }
+var addSubject = (req,res,next) => {
+  var creator = req.user || null;
+  req.check('name', 'Invalid name').notEmpty();
+
+  var errors = req.validationErrors();
+
+  if(creator == null) {
+    res.status(401).json({
+      success : false,
+      message : "Permissions not granted!"
+    })
+  }
+  else if(errors) {
+    res.json({
+      success : false,
+      message : 'Invalid inputs',
+      errors : errors
+    })
+  }
+  else {
+    var name = req.body.name;
+    subjectModel.findOne({'name':name}).then((subject)=>{
+      // subject already exists
+      if(subject) {
+        res.json({
+          success : false,
+          message : 'Subject is already exists!'
+        })
+      }
+      else {
+        //add subject to database
+        var newsubject = new subjectModel({
+          name : name,
+          status : true,
+          createdBy : creator._id
+        })
+
+        newsubject.save()
+        .then(()=> {
+          res.json({
+            success : true,
+            message : 'Subject created successfully!'
+          })
+        })
+        .catch((err)=>{
+          console.log(err);
+          res.status(500).json({
+            success : false,
+            message : "Unable to add Subject"
+          })
+        })
+      }
+    })
+  }
+}
+
+var subjectRemove = (req,res,next) => {
+  if(req.user == null) {
+    res.status(401).json({
+      success : false,
+      message : "Permissions not granted!"
+    })
+  }
+  else {
+    subjectModel.findOneAndUpdate({
+      _id : _id
+    },
+    {
+      status : false
+    }).then(()=>{
+      res.json({
+          success: true,
+          message :  "Subject has been removed"
+      })
+    }).catch((err)=>{
+      res.status(500).json({
+          success : false,
+          message : "Unable to remove subject"
+      })
+    })
+  }
+}
+
+var unblockSubject = (req,res,next) => {
+  if(req.user == null) {
+    res.status(401).json({
+      success : false,
+      message : "Permissions not granted!"
+    })
+  }
+  else {
+    subjectModel.findOneAndUpdate({
+      _id : _id
+    },
+    {
+      status : true
+    }).then(()=>{
+      res.json({
+          success: true,
+          message :  "Subject has been unblocked"
+      })
+    }).catch((err)=>{
+      res.status(500).json({
+          success : false,
+          message : "Unable to unblock subject"
+      })
+    })
+  }
+}
+
+module.exports = { 
+  teacherRegister, 
+  userRemove, 
+  unblockUser, 
+  adminDetails, 
+  addSubject, 
+  subjectRemove,
+  unblockSubject
+}

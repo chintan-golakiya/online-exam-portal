@@ -7,7 +7,7 @@ var queansSchema = new mongoose.Schema({
     required : true
   },
   answer : {
-    type : string,
+    type : String,
     require : true
   }
 },
