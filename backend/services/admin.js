@@ -217,7 +217,7 @@ var subjectRemove = (req,res,next) => {
   }
   else {
     subjectModel.findOneAndUpdate({
-      _id : _id
+      _id : req.body._id
     },
     {
       status : false
@@ -244,7 +244,7 @@ var unblockSubject = (req,res,next) => {
   }
   else {
     subjectModel.findOneAndUpdate({
-      _id : _id
+      _id : req.body._id
     },
     {
       status : true
@@ -262,6 +262,94 @@ var unblockSubject = (req,res,next) => {
   }
 }
 
+var getDashboardCount = (req,res,next) => {
+  errors = 0
+  
+  let activeSubject = 0
+  let blockedSubject = 0
+  let activeTeacher = 0
+  let blockedTeacher = 0
+  let activeStudent = 0
+  let blockedStudent = 0
+  subjectModel.aggregate(
+    [
+      {$match:{}},
+      {$group: {_id:"$status",count:{$sum:1}} }
+    ]
+  )
+  .then((result)=>{
+    result.forEach((x)=>{
+      if(x._id == true) {
+        activeSubject = x.count
+      }
+      if(x._id == false) {
+        blockedSubject = x.count
+      }
+      
+    })
+    userModel.aggregate(
+      [
+        {$match:{usertype:"TEACHER"}},
+        {$group: {_id:"$status",count:{$sum:1}} }
+      ]
+    )
+    .then((result)=>{
+      result.forEach((x)=>{
+        if(x._id == true) {
+          activeTeacher = x.count
+        }
+        if(x._id == false) {
+          blockedTeacher = x.count
+        }
+      })
+      userModel.aggregate(
+        [
+          {$match:{usertype:"STUDENT"}},
+          {$group: {_id:"$status",count:{$sum:1}} }
+        ]
+      )
+      .then((result)=>{
+        result.forEach((x)=>{
+          if(x._id == true) {
+            activeStudent = x.count
+          }
+          if(x._id == false) {
+            blockedStudent = x.count
+          }
+        })
+        res.json({
+          success:true,
+          activeStudent,
+          activeSubject,
+          activeTeacher,
+          blockedStudent,
+          blockedSubject,
+          blockedTeacher
+        })
+      })
+      .catch((err)=>{
+        res.status(500).json({
+          success:false,
+          message:'Internal Server Error'
+        })
+      })
+    })
+    .catch((err)=>{
+      res.status(500).json({
+        success:false,
+        message:'Internal Server Error'
+      })
+    })
+  })
+  .catch((err)=>{
+    res.status(500).json({
+      success:false,
+      message:'Internal Server Error'
+    })
+  })
+
+}
+
 module.exports = { 
   teacherRegister, 
   userRemove, 
@@ -269,5 +357,6 @@ module.exports = {
   adminDetails, 
   addSubject, 
   subjectRemove,
-  unblockSubject
+  unblockSubject,
+  getDashboardCount,
 }

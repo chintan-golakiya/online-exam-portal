@@ -5,7 +5,6 @@ import Auth from "../../services/Auth";
 import Alert from "../../services/alert";
 import { Navigate } from "react-router-dom";
 
-
 export const loginUser = (details) => {
   return async(dispatch, getState) => {
     const response = await axios.post(apis.BASE+ apis.LOGIN,details);
@@ -15,7 +14,7 @@ export const loginUser = (details) => {
         type: ActionTypes.LOGIN,
         payload : {
           isLoggedIn : true,
-          userDetails : response.data.user
+          userDetails : response.data.admin
         }
       })
     } else {
@@ -25,25 +24,29 @@ export const loginUser = (details) => {
   }
 }
 
-export const getUserDetails = () => {
+export const getAdminDetails = () => {
   return async(dispatch) => {
-    const response = await axios.get(apis.BASE+apis.GET_USER_DETAILS, {
+    axios.get(apis.BASE+apis.GET_ADMIN_DETAILS, {
       headers:{
         'Authorization':`Bearer ${Auth.retriveToken()}`
       }
-    });
-    if(response.data.success) {
-      dispatch({
-        type:ActionTypes.LOGIN,
-        payload: {
-          isLoggedIn : true,
-          userDetails : response.data.user
+    }).then(response => {
+      
+        if(response.data.success) {
+          dispatch({
+            type:ActionTypes.LOGIN,
+            payload: {
+              isLoggedIn : true,
+              userDetails : response.data.user
+            }
+          })
+        } else {
+          Auth.deleteToken();
+          return (<Navigate to="/"/>);
         }
-      })
-    } else {
-      Auth.deleteToken();
-      return (<Navigate to="/"/>);
-    }
+      
+    })
+    
   }
 }
 

@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
 import './login.css';
 import { connect } from 'react-redux';
-import Alert from "../../../services/alert";
 import { loginUser} from '../../../redux/actions/loginAction';
 
 
@@ -12,15 +11,15 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email : "",
+      username : "",
       password : ""
     }
   }
 
-  emailInputHandler = (event)=>{
+  usernameInputHandler = (event)=>{
     this.setState({
       ...this.state,
-      email : event.target.value
+      username : event.target.value
     });
   }
 
@@ -33,20 +32,20 @@ class Login extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.loginUser({email:this.state.email,password:this.state.password});
+    this.props.loginUser({username:this.state.username,password:this.state.password});
   }
 
   render(){
     if(this.props.user.isLoggedIn) {
-      return (<Navigate to='/user/home'/>);
+      return (<Navigate to='/home'/>);
     }
     else {
       return (
         <div className="login-box">
-        	<h2>Login</h2>
+        	<h2 className='login-box-title'>Admin Login</h2>
 	        <form onSubmit={this.handleSubmit}>
 		        <div className="user-box">
-			        <input autoComplete="off" className="input-field" type="email" value={this.state.email} onChange={this.emailInputHandler} required />
+			        <input autoComplete="off" className="input-field" type="text" value={this.state.username} onChange={this.usernameInputHandler} required />
 			        <label>Username</label>
 		        </div>
 		      <div className="user-box">

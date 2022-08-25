@@ -1,0 +1,15 @@
+th, td {
+  border : 1px solid black;
+}
+
+.main {
+  background-color: aliceblue;
+  color:black;
+  padding: 20px 100px;
+  display: inline-block;
+}
+
+.title {
+  color:black;
+  text-align: center;
+}

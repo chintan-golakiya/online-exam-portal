@@ -1,5 +1,4 @@
 import { Modal } from 'antd';
-import { Navigate } from 'react-router-dom';
 
 export default function Alert(s='warning',h,b) {
     if(s==='success'){

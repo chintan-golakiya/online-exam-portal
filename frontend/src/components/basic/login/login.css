@@ -22,11 +22,16 @@ body {
   border-radius: 10px;
 }
 
-.login-box h2 {
+.login-box{
   margin: 0 0 30px;
-  padding: 0;
+  padding: 30px;
   color: #f1eee6;
   text-align: center;
+}
+
+.login-box-title {
+  margin-top:30px;
+  color: #07cfda;
 }
 
 .login-box .user-box {
@@ -102,8 +107,10 @@ body {
   height: 2px;
   background: linear-gradient(90deg, transparent, #07cfda);
   animation: btn-anim1 1s linear infinite;
+  animation-delay: 0s;
 }
 
+/* top line */
 @keyframes btn-anim1 {
   0% {
     left: -100%;
@@ -124,6 +131,7 @@ body {
   animation-delay: 0.25s;
 }
 
+/* right line */
 @keyframes btn-anim2 {
   0% {
     top: -100%;
@@ -136,14 +144,15 @@ body {
 
 .login-box span:nth-child(3) {
   bottom: 0;
-  top: -100%;
+  right: -100%;
   width: 100%;
   height: 2px;
   background: linear-gradient(270deg, transparent, #07cfda);
   animation: btn-anim3 1s linear infinite;
-  animation-delay: 0.5s;
+  animation-delay: 0.75s;
 }
 
+/* bottom line */
 @keyframes btn-anim3 {
   0% {
     right: -100%;
@@ -161,9 +170,10 @@ body {
   height: 100%;
   background: linear-gradient(360deg, transparent, #07cfda);
   animation: btn-anim4 1s linear infinite;
-  animation-delay: 0.75s;
+  animation-delay: 0.5s;
 }
 
+/* left line */
 @keyframes btn-anim4 {
   0% {
     bottom: -100%;
