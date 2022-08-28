@@ -54,7 +54,6 @@ class DashboardMain extends React.Component {
 
   render(){
     console.log(this.props.user);
-    console.log(this.expand);
     if(!Auth.retriveToken() || Auth.retriveToken()==='undefined'){
       return (<Navigate to='/'/>);
     } else if(!this.props.user.isLoggedIn) {
