@@ -4,6 +4,8 @@ import LogoutButton from "../../atoms/LogoutButton/LogoutButton";
 import Auth from "../../../helper/Auth";
 import { Navigate } from "react-router-dom";
 import { getUserDetails} from "../../../redux/actions/loginAction";
+import AddQuestionForm from "../../templates/AddQuestionForm/AddQuestionForm";
+import AlertBox from '../../atoms/Alertbox/AlertBox';
 
 class TeacherHomepage extends React.Component{
   constructor(props) {
@@ -22,7 +24,9 @@ class TeacherHomepage extends React.Component{
     }
     return(
       <div>
+        <AlertBox></AlertBox>
         Teacher Homepage
+        <AddQuestionForm/>
         <LogoutButton/>
       </div>
     )

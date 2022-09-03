@@ -25,6 +25,30 @@ var getAllSubject = (req, res, next) => {
   })
 }
 
+var getAllActiveSubject = (req, res, next) => {
+  subjectModel.find({status:true}, (err, sub)=>{
+    if(err) {
+      res.status(500).json({
+        success:false,
+        message : 'Internal server error'
+      })
+    } else {
+      var subjects = []
+      sub.forEach((subject)=>{
+        subjects.push({
+          "id" : subject._id,
+          "subject" : subject.name,
+          "status" : subject.status
+        })
+      })
+      res.json({
+        success : true,
+        subjects : subjects
+      })
+    }
+  })
+}
+
 var getStatusCount = (req,res,next) => {
   subjectModel.aggregate(
     [
@@ -60,5 +84,6 @@ var getStatusCount = (req,res,next) => {
 
 module.exports = {
   getAllSubject,
-  getStatusCount
+  getStatusCount,
+  getAllActiveSubject
 }
