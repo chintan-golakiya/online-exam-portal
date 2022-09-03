@@ -32,7 +32,7 @@ var adminLogin = (req, res, next) => {
             })
           }
 
-          var token = jwt.sign({_id: admin._id}, config.get('jwt.secret'), {expiresIn: '30d'});
+          var token = jwt.sign({_id: admin._id}, config.get('jwt.secret'), {expiresIn: '1d'});
           res.json({
             success : true,
             message : 'login successful',
