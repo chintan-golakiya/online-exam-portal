@@ -112,7 +112,7 @@ var searchQuestion = (req,res,next)=>{
   }
   else {
     questionModel.find({body : new RegExp(req.body.query)}).limit(20).then((questions)=>{
-      result = questions.map((que)=>({_id:que._id,body:que.body}));
+      result = questions.map((que)=>({_id:que._id,body:que.body,status:que.status}));
       res.json({
         success : true,
         list : result
@@ -251,6 +251,70 @@ var getQuestionById = (req,res,next)=>{
   }
 }
 
+var getQuestionAnswerById = (req,res,next)=>{
+  var creator = req.user || null
+  if(creator == null || req.user.usertype != 'TEACHER') {
+    res.status(401).json({
+      success : false,
+      message : "Permissions not granted!"
+    })
+  }
+
+  req.check('id','ID not found').notEmpty();
+  var errors = req.validationErrors()
+
+  if(errors) {
+    console.log(errors);
+    res.json({
+      success : false,
+      message : 'Invalid Inputs',
+      errors : errors
+    })
+  }
+  else {
+    questionModel.findById({_id:req.body.id})
+    .then((result)=>{
+      if(result) {
+        queansModel.find({question:req.body.id})
+        .then((resans)=> {
+          if(resans[0]) {
+            res.json({
+              success:true,
+              question : result,
+              answer: resans[0].answer
+            })
+          } else {
+            res.json({
+              success:true,
+              question: result,
+              answer : ''
+            })
+          }
+        })
+        .catch((err)=>{
+          console.log(err);
+          res.status(500).json({
+            success : false,
+            message : "error"
+          })
+        })
+      } else {
+        res.json({
+          success: false,
+          message : 'not found'
+        })
+      }
+    })
+    .catch((err)=>{
+      console.log(err);
+      res.status(500).json({
+        success : false,
+        message : "error"
+      })
+    })
+  }
+}
+
 // disable/enable question with ans
 var changeQuestionStatus = (req,res,next)=> {
   var creator = req.user || null
@@ -314,10 +378,10 @@ var getAnsByQuestionId = (req,res,next)=>{
   } else {
     queansModel.find({question:req.body.id})
     .then((result)=> {
-      if(result) {
+      if(result[0]) {
         res.json({
           success:true,
-          queans: result
+          queans: result[0]
         })
       } else {
         res.json({
@@ -342,5 +406,6 @@ module.exports = {
   updateQuestion,
   getQuestionById,
   changeQuestionStatus,
-  getAnsByQuestionId
+  getAnsByQuestionId,
+  getQuestionAnswerById
 }

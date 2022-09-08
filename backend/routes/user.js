@@ -16,4 +16,5 @@ router.post('/updateQuestion',questionService.updateQuestion);
 router.post('/getQuestion',questionService.getQuestionById);
 router.post('/changeQuestionStatus',questionService.changeQuestionStatus);
 router.post('/getAnswer',questionService.getAnsByQuestionId);
+router.post('/getQuestionAnswer',questionService.getQuestionAnswerById);
 module.exports = router;
