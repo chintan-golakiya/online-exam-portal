@@ -7,7 +7,7 @@ import { setAlert } from "../../../redux/actions/alertAction";
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import { getSubjectDetails } from '../../../redux/actions/subjectAction';
-import { addQuestionAction } from "../../../redux/actions/questionAction";
+import { updateQuestionAction } from "../../../redux/actions/questionAction";
 import { TextareaAutosize } from "@material-ui/core";
 
 
@@ -49,16 +49,19 @@ const useStyles = ()=>({
   }
 })
 
-class AddQuestionForm extends React.Component {
+
+
+class ViewnUpdateQuestion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      body : "",
-      options : ["","","",""],
-      subject : "",
-      answer : "",
-      marks : 1,
-      explanation : ""
+      id:this.props.question._id,
+      body : this.props.question.body,
+      options : this.props.question.options,
+      subject : this.props.question.subject,
+      answer : this.props.question.answer === '' ? 'None' : this.props.question.answer,
+      marks : this.props.question.marks,
+      explanation : this.props.question.explanation
     }
   }
 
@@ -92,6 +95,12 @@ class AddQuestionForm extends React.Component {
     })
   }
 
+  setAnswerValue = () => {
+    if(this.props.answer < 0) {
+      return 
+    }
+  }
+
   marksInputHandler = (event) => {
     this.setState({
       ...this.state,
@@ -118,8 +127,7 @@ class AddQuestionForm extends React.Component {
       })
       return;
     }
-    console.log(this.state);
-    this.props.addQuestionAction(this.state);
+    this.props.updateQuestionAction(this.state);
   }
 
   render() {
@@ -129,7 +137,7 @@ class AddQuestionForm extends React.Component {
     }
     return (
       <form className={this.props.classes.formClass} onSubmit={(event)=>(this.handleSubmit(event))}>
-        <div className={this.props.classes.formTitle} color="primary">Add Question</div>
+        <div className={this.props.classes.formTitle} color="primary">View and Update question</div>
         <TextField
           variant='outlined'
           color="primary"
@@ -224,9 +232,8 @@ class AddQuestionForm extends React.Component {
           required
           className={this.props.classes.optionInput}
         >
-          <option defaultValue={''} style={{color:'rgba(7,7,7,0.3)'}}>None</option>
           {this.props.subjectDetails.list.map((sub) => (
-            <option key={sub.id} value={sub.id}>
+            <option key={sub.id} value={sub.id} >
               {sub.subject}
             </option>
           ))}
@@ -244,6 +251,7 @@ class AddQuestionForm extends React.Component {
           }}
           required
           className={this.props.classes.optionInput}
+          
         >
           <option value='None'></option>
           <option value={this.state.options[0]}> option A</option>
@@ -259,7 +267,7 @@ class AddQuestionForm extends React.Component {
           color="primary"
           id="explanation"
           placeholder='enter explanation'
-          value={this.state.explanation}
+          value={this.state.explanation || ''}
           onChange={(event)=>(this.explanationInputHandler(event))}
           className={this.props.classes.textarea}
           minRows={3}
@@ -279,11 +287,13 @@ class AddQuestionForm extends React.Component {
 }
 
 const mapStatetoProps = state => ({
-  subjectDetails : state.subjectDetails
+  subjectDetails : state.subjectDetails,
+  question : state.questionDetails.question,
+  answer : state.questionDetails.answer
 })
 
 export default withStyles(useStyles)(connect(mapStatetoProps,{
   getSubjectDetails,
   setAlert,
-  addQuestionAction
-})(AddQuestionForm));
+  updateQuestionAction
+})(ViewnUpdateQuestion));
