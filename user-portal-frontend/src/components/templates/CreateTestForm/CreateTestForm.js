@@ -258,7 +258,7 @@ class CreateTestForm extends React.Component {
           required
           InputProps={{
             inputProps: { 
-              max: 100, min: 10
+              max: 100, min: 5
             }
           }}
         />

@@ -28,6 +28,56 @@ var getAttemptEndTime = (test,startAttemptTime) => {
   return regularEndTime < endTime ? regularEndTime : endTime; 
 }
 
+var sortByIds = (questions, questionids) => {
+  var result = [];
+  for(var i in questionids) {
+    for(var j in questions) {
+      if(questionids[i].toString() === questions[j]._id.toString()) {
+        result.push(questions[j]);
+        break;
+      }
+    }
+  }
+  return result;
+}
+
+var getIndex = (questionDetail,questionids) => {
+  for(var j in questionids) {
+    if(questionDetail._id.toString() === questionids[j].toString()) 
+      return j;
+  }
+  return -1;
+}
+
+var calculateMarks = async(questionids, answers, ansid) => {
+  var marks = 0;
+  var questionDetails = await questionModel.find({_id:{$in:questionids}})
+  .catch(err => {
+    console.log(err);
+  })
+  if(questionDetails.length !== questionids.length) {
+    console.log("not all questions found");
+    return;
+  }
+  for(var i in questionDetails) {
+    var index = getIndex(questionDetails[i],questionids);
+    if(index!=-1 && answers[index]!=null) {
+      if(questionDetails[i].answer.toString() === answers[index].toString()) {
+        marks += questionDetails[i].marks;
+      }
+    }
+  }
+
+  answersheetModel.findOneAndUpdate({_id:ansid, completed:true},{score:marks})
+  .then(result=>{
+    console.log("score is added in answersheet "+ansid);
+  })
+  .catch(err=> {
+    console.log(err);
+  })
+  
+}
+
 var startTestForStudent = async(req,res,next)=> {
   var creator = req.user || null;
   if(creator == null || req.user.usertype != 'STUDENT') {
@@ -71,6 +121,7 @@ var startTestForStudent = async(req,res,next)=> {
                   answersheetModel.findByIdAndUpdate({_id:answersheets[0]._id},answersheets[0])
                   .then(()=>{
                     console.log("answer sheet marked compeleted for test "+test._id+" user "+creator._id);
+                    calculateMarks(test.questions,answersheets[0].answers, answersheets[0]._id);
                   })
                   .catch((err)=>{
                     console.log(err);
@@ -179,8 +230,8 @@ var getQuestionsAndSetStartTime = async(req,res,next)=> {
     return;
   }
 
-  var questions = await questionModel.find({_id:{$in:req.body.questionid}});
-
+  var ques = await questionModel.find({_id:{$in:req.body.questionid}});
+  var questions = sortByIds(ques,req.body.questionid);
 
   var startTime = "";
   if(req.body.addStartTime) {
@@ -282,6 +333,7 @@ var saveAnswer = async(req,res,next) => {
           testDone : true,
           message : "answers updated"
         })
+        calculateMarks(test.questions, req.body.answers, req.body.answersheetid);
       }).catch((err)=>{
         console.log(err);
         console.log("could not update answers and complete test");
@@ -352,6 +404,7 @@ const saveAnswerandEndTest = async(req,res,next)=> {
           success : true,
           message : "Test is completed"
         })
+        calculateMarks(test.questions,  answersheet.answers, answersheet._id);
       })
       .catch((err)=>{
         console.log(err);
@@ -364,6 +417,7 @@ const saveAnswerandEndTest = async(req,res,next)=> {
           success : true,
           message : "Test is completed"
         })
+        calculateMarks(test.questions,  req.body.answers, answersheet._id);
       }).catch((err)=>{
         console.log(err);
         console.log("could not update answers and complete test");
@@ -377,6 +431,8 @@ const saveAnswerandEndTest = async(req,res,next)=> {
     })
   }
 }
+
+
 
 module.exports = {
   startTestForStudent,

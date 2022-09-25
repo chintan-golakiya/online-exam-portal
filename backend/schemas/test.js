@@ -13,10 +13,6 @@ var testSchema = new mongoose.Schema({
     type : mongoose.Schema.Types.ObjectId,
     ref : 'questionModel'
   }],
-  answers : [{
-    type : mongoose.Schema.Types.ObjectId,
-    ref : 'queansModel'
-  }],
   maxmarks : {
     type : Number,
     required : true

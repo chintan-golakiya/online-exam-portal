@@ -1,6 +1,5 @@
 var testModel = require('../models/test');
 var questionModel = require('../models/question');
-var queansModel = require('../models/queans');
 const testRegistrationModel = require('../models/testRegistration');
 
 var getTestStatus = (test) => {
@@ -45,15 +44,10 @@ var generateTestpaper =  async(subjects, maxmarks, queTypes) => {
           continue;
         } else {
           qIndexSet.add(i);
-          templist.push(allQuestions[i]._id);
+          quelist.push(allQuestions[i]._id);
+          anslist.push(allQuestions[i].answer);
           remaining -= allQuestions[i].marks;
         }
-      }
-
-      const queans = await queansModel.find({question:{$in:templist}});
-      for(var y in queans) {
-        quelist.push(queans[y].question);
-        anslist.push(queans[y]._id);
       }
     }
     return {quelist,anslist};

@@ -45,6 +45,10 @@ export const getAdminDetails = () => {
           return (<Navigate to="/"/>);
         }
       
+    }).catch(err => {
+      console.log(err);
+      Auth.deleteToken();
+      return (<Navigate to="/"/>);
     })
     
   }

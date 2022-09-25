@@ -1,6 +1,5 @@
 var subjectModel = require('../models/subject')
 var questionModel = require('../models/question');
-const queansModel = require('../models/queans');
 
 var addQuestion = (req,res,next)=>{
   var creator = req.user || null;
@@ -45,6 +44,7 @@ var addQuestion = (req,res,next)=>{
             options : req.body.options,
             subject : subject._id,
             marks : req.body.marks,
+            answer : req.body.answer,
             status : true,
             createdBy : creator._id
           })
@@ -56,25 +56,11 @@ var addQuestion = (req,res,next)=>{
                 message : "Unable to add question"
               })
             } else {
-              var tempans = new queansModel({
-                question : que._id,
-                answer : req.body.answer
+              res.json({
+                success : true,
+                message : 'Question created successfully!'
               })
-              tempans.save()
-              .then(()=>{
-                res.json({
-                  success : true,
-                  message : 'Question created successfully!'
-                })
-              })
-              .catch((err)=>{
-                console.log(err);
-                res.status(500).json({
-                  success : false,
-                  message : "Unable to save Answer"
-                })
-              })
-            }
+            }  
           })
         }
         else {
@@ -143,6 +129,7 @@ var updateQuestion = (req,res,next)=>{
   req.check('options','Invalid length of list of options').isArray({min:1,max:4})
   req.check('options.*','Invalid Null option').isLength({min:1,max:256})
   req.check('subject','Invalid Subject').notEmpty()
+  req.check('answer','Invalid Answer').notEmpty()
   var errors = req.validationErrors()
   if(errors) {
     console.log(errors);
@@ -151,57 +138,45 @@ var updateQuestion = (req,res,next)=>{
       message : 'Invalid inputs',
       errors : errors
     })
-  } else {
-    var explanation = req.body.explanation || null;
-    questionModel.findByIdAndUpdate({_id:req.body.id},{
-      body : req.body.body,
-      explanation : explanation,
-      options : req.body.options,
-      subject : req.body.subject,
-      marks : req.body.marks,
-      createdBy : creator._id
-    }).then((result)=>{
-      if(result) {
-        var ans = req.body.answer || null;
-        if(ans) {
-          if(req.body.options.includes(req.body.answer) == false) {
-            res.json({
-              success : false,
-              message : 'Invalid inputs',
-              error : 'Answer is not in list of options'
-            })
-            return;
-          }
-          queansModel.findOneAndUpdate({question:result._id},{answer:ans})
-          .then((result)=>{
-            res.json({
-              success:true,
-              message : 'success'
-            })
-          })
-          .catch((err)=>{
-            console.log(err);
-            res.status(500).json({
-              success : false,
-              message : "server error"
-            })
-          })
-        } else {
-          res.json({
-            success:true,
-            message : 'success'
-          })
-        }
-      }
-    })
-    .catch((err)=>{
-      console.log(err);
-      res.status(500).json({
-        success : false,
-        message : "server error"
-      })
-    })
+    return;
   }
+  if(req.body.options.includes(req.body.answer) == false) {
+    res.json({
+      success : false,
+      message : 'Invalid inputs',
+      error : 'Answer is not in list of options'
+    })
+    return;
+  }
+  var explanation = req.body.explanation || null;
+  questionModel.findByIdAndUpdate({_id:req.body.id},{
+    body : req.body.body,
+    explanation : explanation,
+    options : req.body.options,
+    subject : req.body.subject,
+    marks : req.body.marks,
+    answer : req.body.answer,
+    createdBy : creator._id
+  }).then((result)=>{
+    if(result) {
+      res.json({
+        success:true,
+        message : 'success'
+      })
+    } else {
+      res.json({
+        success : false,
+        message : 'not updated'
+      })
+    }
+  })
+  .catch((err)=>{
+    console.log(err);
+    res.status(500).json({
+      success : false,
+      message : "server error"
+    })
+  })
 }
 
 
@@ -376,12 +351,12 @@ var getAnsByQuestionId = (req,res,next)=>{
       errors : errors
     })
   } else {
-    queansModel.find({question:req.body.id})
+    questionModel.findById({_id:req.body.id})
     .then((result)=> {
-      if(result[0]) {
+      if(result) {
         res.json({
           success:true,
-          queans: result[0]
+          answer: result.answer
         })
       } else {
         res.json({

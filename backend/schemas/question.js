@@ -17,6 +17,10 @@ var questionSchema = new mongoose.Schema({
     ref : 'subjectModel',
     required : true
   },
+  answer : {
+    type : String,
+    required : true
+  },
   marks : {
     type : Number,
     requried : true
