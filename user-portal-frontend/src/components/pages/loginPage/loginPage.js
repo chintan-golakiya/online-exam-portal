@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import AlertBox from '../../atoms/Alertbox/AlertBox';
 import LoginForm from '../../templates/loginForm/loginForm';
+import Auth from '../../../helper/Auth';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -19,7 +20,11 @@ class LoginPage extends React.Component {
         return (<Navigate to='/homeTeacher'/>);
       else
         return (<Navigate to='/homeStudent'/>);
-    } else {
+    } else if(Auth.retriveToken() && Auth.retriveToken()!=='undefined'){
+      
+      return (<Navigate to='/homeStudent'/>);
+    } 
+    else {
       return (
         <div>
           <AlertBox/>

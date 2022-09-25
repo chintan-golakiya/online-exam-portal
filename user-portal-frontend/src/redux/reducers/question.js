@@ -41,6 +41,8 @@ export const getQuestionReducer = (state=initialState, {type,payload})=> {
         ...state,
         searched : true
       }
+    case ActionTypes.LOGOUT:
+        return initialState;
     default:
       return state;
   }

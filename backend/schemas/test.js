@@ -25,15 +25,14 @@ var testSchema = new mongoose.Schema({
     type : Number
   }],
   startTime : {
-    type : Date,
-    required : true
+    type : Date
   },
   endTime : {
     type : Date,
     required : true
   },
   duration : {
-    type : Date,
+    type : Number,
     required : true
   },
   regStartTime : {

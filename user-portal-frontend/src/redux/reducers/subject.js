@@ -13,6 +13,8 @@ export const getAllSubjectsReducer = (state=initialState, {type,payload})=> {
         list : payload.subjectlist,
         retrived : true
       };
+    case ActionTypes.LOGOUT:
+      return initialState;
     default:
       return state;
   }

@@ -62,7 +62,10 @@ export const getUserDetails = () => {
           return (<Navigate to="/"/>);
         }
       
-    })
+    }).catch(err=> {
+      Auth.deleteToken();
+      return (<Navigate to="/"/>);
+    }) 
     
   }
 }

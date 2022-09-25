@@ -12,7 +12,17 @@ const apis = {
   CHANGE_QUESTION_STATUS : '/api/v1/user/changeQuestionStatus',
   GET_QUESTION_BY_ID:'/api/v1/user/getQuestionAnswer',
   GET_ANSWER : '/api/v1/user/getAnswer',
-  UPDATE_QUESTION : '/api/v1/user/updateQuestion'
+  UPDATE_QUESTION : '/api/v1/user/updateQuestion',
+  CREATE_QUESTION : '/api/v1/user/createTest',
+  GET_ALL_TEST : '/api/v1/user/getAllTest',
+  GET_ALL_TEST_STUDNET:'/api/v1/user/getAllTestStudent',
+  STUDENT_TEST_REGISTER : '/api/v1/user/testRegistration',
+  GET_UPCOMING_TESTS_STUDENT : '/api/v1/user/getUpcomingTests',
+  GET_TEST_DETAILS_BY_ID : '/api/v1/user/getTestById',
+  START_TEST : '/api/v1/user/startTest',
+  GET_QUESTIONS_TAKETEST : '/api/v1/user/getQuenStarttime',
+  SAVE_ANSWER : '/api/v1/user/saveAnswer',
+  END_TEST : '/api/v1/user/endTest'
 }
 
 export default apis;

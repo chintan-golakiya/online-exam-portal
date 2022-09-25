@@ -8,6 +8,8 @@ import AddQuestionForm from "../../templates/AddQuestionForm/AddQuestionForm";
 import AlertBox from '../../atoms/Alertbox/AlertBox';
 import { Drawer, Typography, withStyles, AppBar, Toolbar, List, ListItem, ListItemText } from "@material-ui/core";
 import QuestionDetails from "../../templates/QuestionDetails/questionDetails";
+import CreateTestForm from "../../templates/CreateTestForm/CreateTestForm";
+import TestDetails from "../../templates/TestDetails/TestDetails";
 
 const drawerWidth = 200
 const appbarHeight = 64
@@ -52,6 +54,12 @@ class TeacherHomepage extends React.Component{
       },{
         title: 'Questions',
         content:<QuestionDetails/>
+      },{
+        title: 'Create Test',
+        content: <CreateTestForm/>
+      },{
+        title : 'View Tests',
+        content : <TestDetails/>
       }]
     }
   }
@@ -75,21 +83,21 @@ class TeacherHomepage extends React.Component{
     return(
       <div>
         <div>
-              <AppBar
-                elevation={0}
-                className={this.props.classes.appbar}
-              >
-                <Toolbar>
+          <AppBar
+            elevation={0}
+            className={this.props.classes.appbar}
+          >
+            <Toolbar>
                   <Typography variant='h5' className={this.props.classes.title}>
                     Teacher Homepage
                   </Typography>
                   <Typography variant='h6'>
                     welcome, {this.props.user.userDetails.username} !!
                   </Typography>
-                </Toolbar>
-              </AppBar>
-              <div className={this.props.classes.addHeight}></div>
-            </div>
+            </Toolbar>
+          </AppBar>
+          <div className={this.props.classes.addHeight}></div>
+        </div>
         <div className={this.props.classes.flex}>
           <Drawer
             className={this.props.classes.drawer}
