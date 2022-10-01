@@ -250,29 +250,11 @@ var getQuestionAnswerById = (req,res,next)=>{
     questionModel.findById({_id:req.body.id})
     .then((result)=>{
       if(result) {
-        queansModel.find({question:req.body.id})
-        .then((resans)=> {
-          if(resans[0]) {
             res.json({
               success:true,
               question : result,
-              answer: resans[0].answer
+              answer: result.answer
             })
-          } else {
-            res.json({
-              success:true,
-              question: result,
-              answer : ''
-            })
-          }
-        })
-        .catch((err)=>{
-          console.log(err);
-          res.status(500).json({
-            success : false,
-            message : "error"
-          })
-        })
       } else {
         res.json({
           success: false,
@@ -375,6 +357,66 @@ var getAnsByQuestionId = (req,res,next)=>{
   }
 }
 
+var getQuestionAnswerByIds = (req,res,next) => {
+  var creator = req.user || null
+  if(creator == null) {
+    res.json({
+      success : false,
+      message : "Permissions not granted!"
+    })
+  }
+
+  req.check('queids','no question ids').isArray({min:1});
+  var errors = req.validationErrors();
+  if(errors) {
+    console.log(errors);
+    res.json({
+      success : false,
+      message : 'Invalid Inputs',
+      errors : errors
+    })
+    return;
+  }
+
+  questionModel.find({_id:{$in:req.body.queids}})
+  .then(ques=> {
+    if(ques.length < req.body.queids) {
+      res.json({
+        success : false,
+        message : 'not all question found'
+      })
+    } else {
+      var questions = [];
+      for(var id in req.body.queids) {
+        for(var q in ques) {
+          if(ques[q]._id.toString() === req.body.queids[id].toString()) {
+            questions.push({
+              _id : ques[q]._id,
+              body : ques[q].body,
+              options : ques[q].options,
+              marks : ques[q].marks,
+              answer : ques[q].answer,
+              explanation : ques[q].explanation
+            })
+            break;
+          }
+        }
+      }
+      res.json({
+        success : true,
+        questions : questions
+      })
+    }
+  })
+  .catch(err=>{
+    console.log(err);
+    res.json({
+      success : false,
+      message : 'internal server error'
+    })
+  })
+}
+
 module.exports = {
   addQuestion,
   searchQuestion,
@@ -382,5 +424,6 @@ module.exports = {
   getQuestionById,
   changeQuestionStatus,
   getAnsByQuestionId,
-  getQuestionAnswerById
+  getQuestionAnswerById,
+  getQuestionAnswerByIds
 }

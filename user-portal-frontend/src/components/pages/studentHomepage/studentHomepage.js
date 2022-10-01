@@ -8,6 +8,7 @@ import { Drawer, Typography, withStyles, AppBar, Toolbar, List, ListItem, ListIt
 import AlertBox from '../../atoms/Alertbox/AlertBox';
 import TestDetailsStudent from "../../templates/TestDetails/TestDetailsStudent";
 import UpcomingStudentTestsDetails from "../../templates/TestDetails/UpcomingStudentTestsDetails";
+import CompletedTestsDetailsStudent from "../../templates/TestDetails/CompletedTestsDetailsStudent";
 
 const drawerWidth = 200
 const appbarHeight = 64
@@ -52,6 +53,9 @@ class StudentHomepage extends React.Component{
       },{
         title : 'Upcoming Tests',
         content:<UpcomingStudentTestsDetails/>
+      },{
+        title : 'Completed Tests',
+        content : <CompletedTestsDetailsStudent/>
       }]
     }
   }

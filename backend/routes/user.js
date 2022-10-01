@@ -6,6 +6,7 @@ var questionService = require('../services/question');
 var subjectService = require('../services/subject');
 var testService = require('../services/test');
 var taketestService = require('../services/taketest');
+var resultService = require('../services/result');
 
 router.get('/details',loginService.userDetails);
 router.get('/getAllTest',testService.getAllTest);
@@ -33,4 +34,8 @@ router.post('/startTest',taketestService.startTestForStudent);
 router.post('/getQuenStarttime',taketestService.getQuestionsAndSetStartTime);
 router.post('/saveAnswer',taketestService.saveAnswer);
 router.post('/endTest',taketestService.saveAnswerandEndTest);
+
+router.get('/getAllCompletedTest',resultService.getAllCompletedTest);
+router.post('/getResultMainDetailsByTestId',resultService.getResultMainDetailsByTestId);
+router.post('/getQuestionAnswerByIds',questionService.getQuestionAnswerByIds)
 module.exports = router;

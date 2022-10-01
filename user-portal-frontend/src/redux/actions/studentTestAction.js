@@ -43,6 +43,24 @@ export const getUpcomingTestsStudentAction = () => {
   }
 }
 
+export const getCompletedTestsStudentAction = () => {
+  return async(dispatch) => {
+    const response = await axios.get(apis.BASE + apis.GET_ALL_COMPLETED_TEST_STUDENT,{
+      headers:{
+        'Authorization':`Bearer ${Auth.retriveToken()}`
+      }
+    });
+    if(response.data.success) {
+      dispatch({
+        type : ActionTypes.GET_ALL_COMPLETED_TEST_STUDENT,
+        payload : {
+          testlist : response.data.completedtestlist
+        }
+      })
+    }
+  }
+}
+
 export const studentTestRegister = (details) => {
   return async(dispatch)=>{
     axios.post(apis.BASE + apis.STUDENT_TEST_REGISTER,details, {
@@ -94,6 +112,66 @@ export const getTestById = (details) => {
           isAlert : true,
           title : "Could not get test details",
           type : "error",
+          message : response.data.message
+        }
+      })
+    }
+  }
+}
+
+export const getTestResultStudent = (details) => {
+
+  return async(dispatch)=> {
+    var response = await axios.post(apis.BASE + apis.GET_TEST_RESULT_STUDENT,details,{
+      headers:{
+        'Authorization':`Bearer ${Auth.retriveToken()}`
+      }
+    })
+    if(response.data.success){
+      dispatch({
+        type : ActionTypes.GET_TEST_RESULT_STUDENT,
+        payload : {
+          test : response.data.result
+        }
+      })
+    } else {
+      dispatch({
+        type : ActionTypes.SET_ALERT,
+        payload : {
+          isAlert : true,
+          type : 'error',
+          title : 'Error',
+          message : response.data.message
+        }
+      })
+    }
+    
+  }
+}
+
+
+export const getQuestionAnswerActionStudent = (details) => {
+  return async(dispatch) => {
+    var response = await axios.post(apis.BASE + apis.GET_RESULT_QUESTIONS_STUDENTS, details, {
+      headers:{
+        'Authorization':`Bearer ${Auth.retriveToken()}`
+      }
+    })
+    console.log(response.data);
+    if(response.data.success) {
+      dispatch({
+        type : ActionTypes.GET_RESULT_QUESTIONS_STUDENTS,
+        payload : {
+          questions : response.data.questions
+        }
+      })
+    } else {
+      dispatch({
+        type : ActionTypes.SET_ALERT,
+        payload : {
+          isAlert : true,
+          type : 'error',
+          title : 'Error',
           message : response.data.message
         }
       })

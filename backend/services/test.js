@@ -446,5 +446,7 @@ module.exports = {
   testRegistration,
   getAllTestWithStudentRegisterCheck,
   getUpcomingTestforStudent,
-  getTestDetailsFromId
+  getTestDetailsFromId,
+  getTestStatus,
+  updateStatus
 }

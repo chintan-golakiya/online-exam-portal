@@ -22,7 +22,10 @@ const apis = {
   START_TEST : '/api/v1/user/startTest',
   GET_QUESTIONS_TAKETEST : '/api/v1/user/getQuenStarttime',
   SAVE_ANSWER : '/api/v1/user/saveAnswer',
-  END_TEST : '/api/v1/user/endTest'
+  END_TEST : '/api/v1/user/endTest',
+  GET_ALL_COMPLETED_TEST_STUDENT : '/api/v1/user/getAllCompletedTest',
+  GET_TEST_RESULT_STUDENT:'/api/v1/user/getResultMainDetailsByTestId',
+  GET_RESULT_QUESTIONS_STUDENTS : '/api/v1/user/getQuestionAnswerByIds'
 }
 
 export default apis;
