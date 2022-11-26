@@ -2,7 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import { TableBody, TableCell, TableRow, Table, TableHead, TableContainer, Paper } from "@material-ui/core";
-
+import { getTestDetailsFromId } from "../../../redux/actions/teacherTestAction";
 
 
 const useStyles = (theme)=> ({
@@ -23,7 +23,7 @@ class TestTable extends React.Component {
   }
 
   onTestClick(event,id) {
-    console.log(id);
+    this.props.getTestDetailsFromId({testid:id});
   }
 
   render() {
@@ -58,5 +58,5 @@ const mapStatetoProps = state => ({
 })
 
 export default withStyles(useStyles)(connect(mapStatetoProps,{
-
+  getTestDetailsFromId
 })(TestTable));

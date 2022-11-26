@@ -103,6 +103,27 @@ export const TestReducer = (state=initialState, {type,payload})=> {
         completedTestRetrived : false,
         viewTestResult : true
       }
+    case ActionTypes.GET_TEST_DETAILS_TEACHER:
+      return {
+        ...state,
+        test : payload.test,
+        retrived : false,
+        upcomingTestRetrived : false,
+        searched : true,
+        viewTestRetrived : false,
+        completedTestRetrived : false,
+        viewTestResult : false
+      }
+    case ActionTypes.Go_BACK_ALL_TEST_TEACHER:
+      return {
+        ...state,
+        retrived : true,
+        upcomingTestRetrived : false,
+        searched : false,
+        viewTestRetrived : false,
+        completedTestRetrived : false,
+        viewTestResult : false
+      }
     case ActionTypes.LOGOUT:
       return initialState;
 

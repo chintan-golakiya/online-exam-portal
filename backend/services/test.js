@@ -403,21 +403,41 @@ var getTestDetailsFromId = (req,res,next) => {
         updateStatus(test,correctStatus);
         test.status = correctStatus;
       }
-      res.json({
-        success : true,
-        test : {
-          _id : test._id,
-          title : test.title,
-          status : test.status,
-          startTime : test.startTime,
-          endTime : test.endTime,
-          regStartTime : test.regStartTime,
-          regEndTime : test.regEndTime,
-          resultTime : test.resultTime,
-          maxmarks : test.maxmarks,
-          duration : test.duration
-        }
-      })
+      if(req.user.usertype == 'STUDENT') {
+        res.json({
+          success : true,
+          test : {
+            _id : test._id,
+            title : test.title,
+            status : test.status,
+            startTime : test.startTime,
+            endTime : test.endTime,
+            regStartTime : test.regStartTime,
+            regEndTime : test.regEndTime,
+            resultTime : test.resultTime,
+            maxmarks : test.maxmarks,
+            duration : test.duration
+          }
+        })
+      } else {
+        res.json({
+          success : true,
+          test : {
+            _id : test._id,
+            title : test.title,
+            status : test.status,
+            startTime : test.startTime,
+            endTime : test.endTime,
+            regStartTime : test.regStartTime,
+            regEndTime : test.regEndTime,
+            resultTime : test.resultTime,
+            maxmarks : test.maxmarks,
+            duration : test.duration,
+            subjects : test.subjects,
+            queTypes : test.queTypes
+          }
+        })
+      }
     } else {
       res.json({
         success : false,
@@ -436,7 +456,6 @@ var getTestDetailsFromId = (req,res,next) => {
 
   
 }
-
 
 
 
