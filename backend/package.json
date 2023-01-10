@@ -2,16 +2,16 @@
   "name": "examportalbackend",
   "version": "1.0.0",
   "description": "backend logic of the project using Mongo DB, Node js",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "nodemon"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com//backend.git"
   },
-  "author": "",
+  "author": "Chintan Golakiya",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com//backend/issues"
@@ -38,5 +38,17 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "xlsx": "^0.14.4"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "models",
+      "routes",
+      "schemas",
+      "services"
+    ]
   }
 }

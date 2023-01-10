@@ -1,4 +1,4 @@
-const PORT = process.env.PORT || 5000
+
 var createError = require('http-errors');
 var express = require('express');
 const helmet = require('helmet')
@@ -69,10 +69,6 @@ app.use((err, req, res, next)=>{
     });
 });
 
-app.listen(PORT,(err)=>{
-    if(err){
-      console.log(err);
-    }
-    console.log(`Server Started. Server listening to port ${PORT}`);
-});
+
+module.exports = app;
 
