@@ -198,7 +198,7 @@ Distributed under the no License.
 <!-- Contact -->
 ## :handshake: Contact
 
-Your Name - [@_chint4n_](https://twitter.com/_chint4n_) - golakiyachintan24@gmail.com
+Chintan Golakiya - [@_chint4n_](https://twitter.com/_chint4n_) - golakiyachintan24@gmail.com
 
 Project Link: [https://github.com/chintan-golakiya/online-exam-portal](https://github.com/chintan-golakiya/online-exam-portal)
 
