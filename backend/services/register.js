@@ -9,7 +9,7 @@ var studentRegister = (req,res,next) => {
 
   var errors = req.validationErrors();
   if(errors) {
-    res.json({
+    res.status(400).json({
       success : false,
       message : 'Invalid inputs',
       errors : errors
@@ -23,7 +23,7 @@ var studentRegister = (req,res,next) => {
     userModel.findOne({'email':email}).then((user)=>{
       //user already exists
       if(user) {
-        res.json({
+        res.status(400).json({
           success : false,
           message : 'This email is already exists!'
         })
