@@ -51,6 +51,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 - [Getting Started](#toolbox-getting-started)
   * [Prerequisites](#bangbang-prerequisites)
   * [Run Locally](#running-run-locally)
+- [To-do](#notes-to-do)
 - [Contributing](#wave-contributing)
 - [License](#warning-license)
 - [Contact](#handshake-contact)
@@ -173,7 +174,12 @@ Start the frontend client for teacher/student
   npm start
 ```
 
-
+<!-- To Do -->
+## :notes: to-do
+  <ul>
+  <li> add more features </li>
+  </ul>
+ 
 <!-- Contributing -->
 ## :wave: Contributing
 
