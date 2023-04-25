@@ -1,0 +1,12 @@
+{
+    "mongodb": {
+        "connectionString": "mongodb://admin:password@mongodb:27017"
+    },
+    "jwt": {
+        "secret" : "mysecret"
+    },
+    "mail-credentials" : {
+        "userid" :"admin",
+        "password" : "password"
+    }
+}
