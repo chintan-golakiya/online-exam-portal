@@ -1,0 +1,71 @@
+version: '3'
+services:
+  server:
+    container_name: server-app
+    image: server-app:1.0
+    build: 
+      context: server
+      dockerfile: Dockerfile
+
+    ports:
+     - 5000:5000
+
+    depends_on:
+     - "mongodb"
+     - "mongo-express"
+
+  frontend:
+    container_name: frontend-app
+    image: frontend-app:1.0
+    environment:
+      - REACT_APP_API_BASE_URL=http://server:5000
+    build: 
+      context: frontend
+      dockerfile: Dockerfile
+
+    ports:
+     - 3100:3000
+
+    depends_on:
+     - "server"
+
+
+  user-frontend:
+    container_name: user-frontend-app
+    image: user-frontend-app:1.0
+    environment:
+      - REACT_APP_API_BASE_URL=http://server:5000
+    build: 
+      context: user-portal-frontend
+      dockerfile: Dockerfile
+
+    ports:
+     - 3200:3000
+
+    depends_on:
+     - "server"
+     - "frontend"
+
+  mongodb:
+    image: mongo
+    ports:
+     - 27017:27017
+    environment:
+     - MONGO_INITDB_ROOT_USERNAME=admin
+     - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+     - mongo-data:/data/db
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+     - 8080:8081
+    environment:
+     - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+     - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+     - ME_CONFIG_MONGODB_SERVER=mongodb
+    depends_on:
+     - "mongodb"
+volumes:
+  mongo-data:
+    driver: local
