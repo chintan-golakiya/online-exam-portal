@@ -1,6 +1,8 @@
 var userModel = require('../models/user');
 var subjectModel = require('../models/subject');
 var tool = require('./tool');
+const adminModel = require('../models/admin');
+const { hashPassword } = require('../services/tool');
 
 var teacherRegister = (req,res,next) => {
   var creator = req.user || null;
@@ -350,6 +352,23 @@ var getDashboardCount = (req,res,next) => {
 
 }
 
+var addAdminIfNotFound = () => {
+  adminModel.findOne({'username':'sysadmin'}).then((admin)=>{
+    if(admin) {
+      console.log("Admin user found");
+    } else {
+      hashPassword("systemadmin").then((hash)=>{
+        var tempAdmin = new adminModel({
+          username : "sysadmin",
+          password : hash
+        })
+        tempAdmin.save().then(()=>{
+          console.log("Admin added successfully !!");
+        });
+      })
+    }
+  })
+}
 
 
 module.exports = { 
@@ -361,4 +380,5 @@ module.exports = {
   subjectRemove,
   unblockSubject,
   getDashboardCount,
+  addAdminIfNotFound
 }
