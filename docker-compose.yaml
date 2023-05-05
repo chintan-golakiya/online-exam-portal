@@ -70,7 +70,9 @@ services:
       dockerfile: Dockerfile
 
     ports:
+
       - 3200:3000
+
 
     depends_on:
       - backend

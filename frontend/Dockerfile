@@ -8,5 +8,6 @@ RUN npm install
 
 RUN npm run build
 
-# Run the application
-CMD ["sh","-c", "npm start"]
+
+CMD ["sh", "-c", "npm start"]
+

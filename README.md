@@ -51,6 +51,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 - [Getting Started](#toolbox-getting-started)
   * [Prerequisites](#bangbang-prerequisites)
   * [Run Locally](#running-run-locally)
+  * [Run with Docker](#run-with-docker)
 - [To-do](#notes-to-do)
 - [Contributing](#wave-contributing)
 - [License](#warning-license)
@@ -172,6 +173,29 @@ Start the frontend client for teacher/student
 ```bash
   cd user-portal-frontend
   npm start
+```
+
+<!-- Run with Docker -->
+### Run With Docker
+
+build docker images
+
+```bash
+  docker-compose build
+```
+
+Run container and services
+
+```bash
+  docker-compose up
+```
+
+Use following paths 
+
+```bash
+  Backend server : localhost:5000/
+  Admin Frontend : localhost:3100/
+  User  Frontend : localhost:3200/
 ```
 
 <!-- To Do -->
