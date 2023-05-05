@@ -14,16 +14,12 @@ const options = {
   useNewUrlParser: true,
   useFindAndModify :  false
 };
-
+if(process.env.NODE_ENV==="docker") {
+  options.authSource = config.get('mongodb.authDB')
+}
 mongoose.connect(config.get('mongodb.connectionString'),options).then(()=>{
-    console.log("connected to mongoDB");
-    hashPassword("systemadmin").then((hash)=>{
-      var tempAdmin = new adminModel({
-        username : "sysadmin",
-        password : "password"
-      })
-      tempAdmin.save();
-    })
+  console.log("connected to mongoDB");
+  adminService.addAdminIfNotFound();
     
 }).catch((err)=>{
     console.log("Error connecting to database",err);

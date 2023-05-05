@@ -1,60 +1,36 @@
-version: '3'
+version: '1'
+
 services:
-  server:
-    container_name: server-app
-    image: server-app:1.0
-    build: 
-      context: server
-      dockerfile: Dockerfile
-
-    ports:
-     - 5000:5000
-
-    depends_on:
-     - "mongodb"
-     - "mongo-express"
-
-  frontend:
-    container_name: frontend-app
-    image: frontend-app:1.0
+  backend:
+    container_name: backend-app
+    image: backend-app:1.0
     environment:
-      - REACT_APP_API_BASE_URL=http://server:5000
-    build: 
-      context: frontend
+      - NODE_ENV=docker
+    build:
+      context: backend
       dockerfile: Dockerfile
-
     ports:
-     - 3100:3000
+      - 5000:5000
+    links:
+      - mongodb
 
-    depends_on:
-     - "server"
-
-
-  user-frontend:
-    container_name: user-frontend-app
-    image: user-frontend-app:1.0
-    environment:
-      - REACT_APP_API_BASE_URL=http://server:5000
-    build: 
-      context: user-portal-frontend
-      dockerfile: Dockerfile
-
-    ports:
-     - 3200:3000
-
-    depends_on:
-     - "server"
-     - "frontend"
 
   mongodb:
     image: mongo
     ports:
-     - 27017:27017
+     - 27018:27017
     environment:
      - MONGO_INITDB_ROOT_USERNAME=admin
      - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
      - mongo-data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
   mongo-express:
     image: mongo-express
     restart: always
@@ -66,6 +42,40 @@ services:
      - ME_CONFIG_MONGODB_SERVER=mongodb
     depends_on:
      - "mongodb"
+      
+  
+  frontend:
+    container_name: frontend-app
+    image: frontend-app:1.0
+    environment:
+      - NODE_ENV=docker
+      - REACT_APP_API_BASE_URL=http://backend:5000
+      
+    build: 
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+     - 3100:3000
+    depends_on:
+     - backend
+
+  user-frontend:
+    container_name: user-frontend-app
+    image: user-frontend-app:1.0
+    environment:
+      - NODE_ENV=docker
+      - REACT_APP_API_BASE_URL=http://backend:5000
+    build:
+      context: user-portal-frontend
+      dockerfile: Dockerfile
+
+    ports:
+      - 3200:3000
+
+    depends_on:
+      - backend
+      - frontend
+
 volumes:
   mongo-data:
     driver: local

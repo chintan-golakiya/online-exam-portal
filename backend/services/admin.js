@@ -350,6 +350,23 @@ var getDashboardCount = (req,res,next) => {
 
 }
 
+var addAdminIfNotFound = () => {
+  adminModel.findOne({'username':'sysadmin'}).then((admin)=>{
+    if(admin) {
+      console.log("Admin user found");
+    } else {
+      hashPassword("systemadmin").then((hash)=>{
+        var tempAdmin = new adminModel({
+          username : "sysadmin",
+          password : hash
+        })
+        tempAdmin.save().then(()=>{
+          console.log("Admin added successfully !!");
+        });
+      })
+    }
+  })
+}
 
 
 module.exports = { 
