@@ -175,6 +175,8 @@ Start the frontend client for teacher/student
   npm start
 ```
 
+<b>Note</b> : admin user is created when backend runs first time. default admin (username, password) details are <b>("sysadmin","systemadmin"). addAdminIfNotFound() function of backend/services/admin.js file </b> is for this logic. You can check/modify default admin details from this function.
+
 <!-- Run with Docker -->
 ### Run With Docker
 
