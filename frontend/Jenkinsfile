@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+        environment {
+            DOCKERHUB_CREDENTIALS='dokerhub-jenkins'
+            IMAGE = "gayathrimallisetti/frontend"
+        }
+        options {
+        timeout(time: 1, unit: 'HOURS') 
+        timestamps()
+        }
+    stages {
+        stage('dynamic build name') {
+            steps {
+              script {
+                currentBuild.displayName = "#${BUILD_NUMBER} -npm"
+                currentBuild.description = "build for npm"
+            }
+          }
+        }
+        stage('git clone') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'jenkins-github-ssh-key', url: 'git@github.com:gayathrimallisetti118-sys/online-exam-portal.git']])
+            }
+         }
+         stage('npm build') {
+            steps {
+                sh '''
+                 cd frontend
+                 npm install
+                 npm run build
+                 '''
+            }
+         }  
+        stage('Build docker image') {
+            steps {
+              script {
+                  dockerImage = docker.build("gayathrimallisetti/frontend:${BUILD_NUMBER}", "frontend")
+              }
+            }
+        }
+        stage('Push to Dockerhub') {
+            steps {
+               script {
+                   docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
+                       dockerImage.push("${BUILD_NUMBER}") 
+                       dockerImage.push("latest")
+                   }
+               }
+            }
+        }
+       stage('deploy container') {
+         steps {
+             script {
+             sh '''
+              docker pull gayathrimallisetti/frontend:latest
+              docker stop myapp
+              docker rm myapp
+              docker run -d -p 81:80 --name myapp gayathrimallisetti/frontend:latest
+              '''
+            }
+        }
+      }
+    }
+}

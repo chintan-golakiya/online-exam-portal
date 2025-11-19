@@ -1,48 +1,37 @@
 {
-  "name": "examportalbackend",
-  "version": "1.0.0",
-  "description": "backend logic of the project using Mongo DB, Node js",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest",
-    "start": "nodemon"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com//backend.git"
-  },
   "author": "Chintan Golakiya",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com//backend/issues"
   },
-  "homepage": "https://github.com//backend#readme",
   "dependencies": {
-    "app-root-path": "^2.2.1",
-    "bcrypt": "^5.0.1",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "config": "^3.1.0",
-    "cors": "^2.8.5",
-    "exceljs": "^1.13.0",
+    "app-root-path": "3.1.0",
+    "bcrypt": "5.1.0",
+    "bcryptjs": "2.4.3",
+    "body-parser": "1.20.2",
+    "config": "3.3.9",
+    "cors": "2.8.5",
+    "exceljs": "4.3.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.5",
+    "express-session": "^1.17.3",
     "express-validator": "^5.3.1",
-    "helmet": "^3.18.0",
-    "http-errors": "^1.7.2",
-    "mongoose": "^5.6.0",
-    "morgan": "^1.9.1",
-    "multer": "^1.4.1",
-    "nodemailer": "^6.2.1",
-    "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
-    "xlsx": "^0.14.4"
+    "helmet": "6.1.5",
+    "http-errors": "2.0.0",
+    "mongoose": "5.6.0",
+    "morgan": "1.10.0",
+    "multer": "1.4.5-lts.1",
+    "nodemailer": "6.9.1",
+    "passport": "0.6.0",
+    "passport-jwt": "4.0.1",
+    "passport-local": "1.0.0",
+    "xlsx": "0.18.5"
   },
+  "description": "backend logic of the project using Mongo DB, Node js",
   "devDependencies": {
-    "jest": "^29.3.1",
-    "supertest": "^6.3.3"
+    "jest": "29.5.0",
+    "supertest": "6.3.3"
   },
+  "homepage": "https://github.com//backend#readme",
   "jest": {
     "testPathIgnorePatterns": [
       "models",
@@ -50,5 +39,17 @@
       "schemas",
       "services"
     ]
-  }
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "name": "examportalbackend",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com//backend.git"
+  },
+  "scripts": {
+    "start": "nodemon",
+    "test": "jest"
+  },
+  "version": "1.0.0"
 }

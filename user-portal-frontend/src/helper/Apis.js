@@ -1,8 +1,14 @@
 const environment = process.env.NODE_ENV;
+let base_local_url = 'http://localhost:3001';
+let base_backend_url = 'http://localhost:5000';
+if(environment==='docker') {
+  base_local_url = 'http://user-frontend-app:3001';
+  base_backend_url = 'http://backend:5000';
+}
 
 const apis = {
-  BASE_LOCAL_URL:environment==='development'?'http://localhost:3001':'',
-  BASE : environment==='development'?'http://localhost:5000':'',
+  BASE_LOCAL_URL:base_local_url,
+  BASE : base_backend_url,
   LOGIN : "/api/v1/login",
   GET_USER_DETAILS: "/api/v1/user/details",
   STUDENT_REGISTER: "/api/v1/public/register",

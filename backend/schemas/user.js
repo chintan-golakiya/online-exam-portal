@@ -30,7 +30,7 @@ var userSchema = new mongoose.Schema({
 
 },
 {
-  timestamps:{}
+  timestamps:true
 })
 
 module.exports = userSchema

@@ -55,7 +55,7 @@ var testSchema = new mongoose.Schema({
   }
 },
 {
-  timestamps : {}
+  timestamps : true
 })
 
 module.exports = testSchema

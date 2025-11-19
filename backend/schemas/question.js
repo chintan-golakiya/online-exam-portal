@@ -23,7 +23,7 @@ var questionSchema = new mongoose.Schema({
   },
   marks : {
     type : Number,
-    requried : true
+    required : true
   },
   status : {
     type : Boolean,
@@ -36,7 +36,7 @@ var questionSchema = new mongoose.Schema({
   }
 }, 
 {
-  timestamps: {}
+  timestamps: true
 })
 
 module.exports = questionSchema;

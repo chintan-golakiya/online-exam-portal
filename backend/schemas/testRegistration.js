@@ -10,7 +10,7 @@ var testRegistrationSchema = new mongoose.Schema({
     ref : 'testModel'
   }
 },{
-  timestamps:{}
+  timestamps:true
 })
 
 module.exports = testRegistrationSchema

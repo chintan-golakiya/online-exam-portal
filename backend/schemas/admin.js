@@ -10,7 +10,7 @@ var adminSchema = new mongoose.Schema({
     required : true
   }
 },{
-  timestamps:{}
+  timestamps:true
 })
 
 module.exports = adminSchema
